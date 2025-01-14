@@ -28,9 +28,16 @@ class AdminController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function manageUsers()
+    public function manageUsers(Request $request)
     {
-        $users = User::all();
+        $query = User::query();
+
+        if ($request->has('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('email', 'like', '%' . $request->search . '%');
+        }
+        
+        $users = $query->paginate(10);
         return view('admin.manage-users', compact('users'));
     }
 
