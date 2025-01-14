@@ -3,39 +3,37 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @return void
      */
-    public function run(): void
+    public function run()
     {
-         // Create an Admin
-         User::create([
+        // Create specific roles
+        User::factory()->create([
             'name' => 'Admin User',
             'email' => 'admin@example.com',
-            'password' => Hash::make('password'),
             'role' => 'Admin',
         ]);
 
-        // Create a Transporter
-        User::create([
+        User::factory()->create([
             'name' => 'Transporter User',
             'email' => 'transporter@example.com',
-            'password' => Hash::make('password'),
             'role' => 'Transporter',
         ]);
 
-        // Create a Regular User
-        User::create([
+        User::factory()->create([
             'name' => 'Regular User',
             'email' => 'user@example.com',
-            'password' => Hash::make('password'),
             'role' => 'User',
         ]);
+
+        // Create 10 random users with random roles
+        User::factory(10)->create();
     }
 }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('vehicle_type');
             $table->string('license_plate')->unique();
             $table->enum('availability_status', ['Available', 'Busy'])->default('Available');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
