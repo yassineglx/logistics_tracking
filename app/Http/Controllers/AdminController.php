@@ -163,7 +163,7 @@ class AdminController extends Controller
 
     public function managePackages()
     {
-        $packages = Package::all();
+        $packages = Package::paginate(10);
         return view('admin.manage-packages', compact('packages'));
     }
 
