@@ -18,15 +18,22 @@
                 </div>
                 <div class="flex items-center">
                     @auth
-                        <a href="{{ route('user.dashboard') }}" class="text-gray-700 hover:text-blue-600 px-4">Dashboard</a>
-                        <form method="POST" action="{{ route('logout') }}" class="inline">
-                            @csrf
-                            <button type="submit" class="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-md">Logout</button>
-                        </form>
-                    @else
-                        <a href="{{ route('login') }}" class="text-gray-700 hover:text-blue-600 px-4">Login</a>
-                        <a href="{{ route('register') }}" class="ml-4 inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Register</a>
-                    @endauth
+                    {{-- <div>
+                        <p>Role: {{ Auth::user()->role }}</p>
+                    </div> --}}
+                    @if(Auth::user()->hasRole('Admin'))
+                        <a href="{{ route('admin.dashboard') }}" class="text-gray-700 hover:text-blue-600 px-4">Admin Dashboard</a>
+                    @elseif(Auth::user()->hasRole('User'))
+                        <a href="{{ route('user.dashboard') }}" class="text-gray-700 hover:text-blue-600 px-4">User Dashboard</a>
+                    @endif
+                    <form method="POST" action="{{ route('logout') }}" class="inline">
+                        @csrf
+                        <button type="submit" class="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-md">Logout</button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="text-gray-700 hover:text-blue-600 px-4">Login</a>
+                    <a href="{{ route('register') }}" class="ml-4 inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Register</a>
+                @endauth
                 </div>
             </div>
         </div>

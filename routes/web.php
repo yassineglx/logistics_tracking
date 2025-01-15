@@ -63,7 +63,7 @@ Route::middleware(['auth', 'role:Transporter'])->group(function () {
     });
 });
 
-Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
+Route::middleware(['auth','role:User'])->prefix('user')->name('user.')->group(function () {
 
     Route::get('/profile', [UserProfileController::class, 'show'])->name('profile');
     Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');

@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Package::class);
     }
+
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
 }
