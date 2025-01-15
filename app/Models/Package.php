@@ -20,6 +20,10 @@ class Package extends Model
         'delivery_date',
     ];
 
+    protected $casts = [
+        'delivery_date' => 'datetime'
+    ];
+
     /**
      * Relationship: A package belongs to a user (owner).
      */

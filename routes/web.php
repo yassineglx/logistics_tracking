@@ -31,18 +31,24 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 
     // Users management
     Route::get('/users', [AdminController::class, 'manageUsers'])->name('manage-users');
+    Route::get('/users/create', [AdminController::class, 'createUser'])->name('create-user');
+    Route::post('/users', [AdminController::class, 'storeUser'])->name('store-user');
     Route::get('/users/{user}/edit', [AdminController::class, 'editUser'])->name('edit-user');
     Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('update-user');
     Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('delete-user');
 
     // Transporters management
     Route::get('/transporters', [AdminController::class, 'manageTransporters'])->name('manage-transporters');
+    Route::get('/transporters/create', [AdminController::class, 'createTransporter'])->name('create-transporter');
+    Route::post('/transporters', [AdminController::class, 'storeTransporter'])->name('store-transporter');
     Route::get('/transporters/{transporter}/edit', [AdminController::class, 'editTransporter'])->name('edit-transporter');
     Route::put('/transporters/{transporter}', [AdminController::class, 'updateTransporter'])->name('update-transporter');
     Route::delete('/transporters/{transporter}', [AdminController::class, 'deleteTransporter'])->name('delete-transporter');
 
     // Packages management
     Route::get('/packages', [AdminController::class, 'managePackages'])->name('manage-packages');
+    Route::get('/packages/create', [AdminController::class, 'createPackage'])->name('create-package');
+    Route::post('/packages', [AdminController::class, 'storePackage'])->name('store-package');
     Route::get('/packages/{package}/edit', [AdminController::class, 'editPackage'])->name('edit-package');
     Route::put('/packages/{package}', [AdminController::class, 'updatePackage'])->name('update-package');
     Route::delete('/packages/{package}', [AdminController::class, 'deletePackage'])->name('delete-package');

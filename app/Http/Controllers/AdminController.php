@@ -9,11 +9,7 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    /**
-     * Show the admin dashboard.
-     *
-     * @return \Illuminate\View\View
-     */
+
     public function dashboard()
     {
         $users = User::all();
@@ -23,42 +19,51 @@ class AdminController extends Controller
         return view('admin.dashboard', compact('users', 'transporters', 'packages'));
     }
 
-    /**
-     * Manage users in the admin panel.
-     *
-     * @return \Illuminate\View\View
-     */
+    public function createUser()
+    {
+        return view('admin.create-user');
+    }
+
+    // Store User
+    public function storeUser(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:8',
+            'role' => 'required|in:Admin,User,Transporter',
+        ]);
+
+        User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => bcrypt($validated['password']),
+            'role' => $validated['role'],
+        ]);
+
+        return redirect()->route('admin.manage-users')->with('success', 'User created successfully.');
+    }
+
     public function manageUsers(Request $request)
     {
         $query = User::query();
 
         if ($request->has('search')) {
             $query->where('name', 'like', '%' . $request->search . '%')
-                  ->orWhere('email', 'like', '%' . $request->search . '%');
+                ->orWhere('email', 'like', '%' . $request->search . '%');
         }
-        
+
         $users = $query->paginate(10);
         return view('admin.manage-users', compact('users'));
     }
 
-    /**
-     * Show the form to edit a user.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\View\View
-     */
+
     public function editUser(User $user)
     {
-        return view('admin.edit-user', compact('user'));
+        return view('admin.edit-users', compact('user'));
     }
 
-    /**
-     * Update a user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\RedirectResponse
-     */
+
     public function updateUser(Request $request, User $user)
     {
         $validated = $request->validate([
@@ -72,47 +77,45 @@ class AdminController extends Controller
         return redirect()->route('admin.manage-users')->with('success', 'User updated successfully.');
     }
 
-    /**
-     * Delete a user.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function deleteUser(User $user)
     {
         $user->delete();
         return redirect()->route('admin.manage-users')->with('success', 'User deleted successfully.');
     }
 
-    /**
-     * Manage transporters in the admin panel.
-     *
-     * @return \Illuminate\View\View
-     */
+    public function createTransporter()
+    {
+        return view('admin.create-transporter');
+    }
+
+    // Store Transporter
+    public function storeTransporter(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|unique:transporters',
+            'vehicle_type' => 'required|string',
+            'license_plate' => 'required|unique:transporters',
+            'availability_status' => 'required|in:Available,Busy',
+        ]);
+
+        Transporter::create($validated);
+
+        return redirect()->route('admin.manage-transporters')->with('success', 'Transporter created successfully.');
+    }
     public function manageTransporters()
     {
         $transporters = Transporter::all();
         return view('admin.manage-transporters', compact('transporters'));
     }
 
-    /**
-     * Show the form to edit a transporter.
-     *
-     * @param  \App\Models\Transporter  $transporter
-     * @return \Illuminate\View\View
-     */
+
     public function editTransporter(Transporter $transporter)
     {
         return view('admin.edit-transporter', compact('transporter'));
     }
 
-    /**
-     * Update a transporter.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Transporter  $transporter
-     * @return \Illuminate\Http\RedirectResponse
-     */
+
     public function updateTransporter(Request $request, Transporter $transporter)
     {
         $validated = $request->validate([
@@ -128,50 +131,54 @@ class AdminController extends Controller
         return redirect()->route('admin.manage-transporters')->with('success', 'Transporter updated successfully.');
     }
 
-    /**
-     * Delete a transporter.
-     *
-     * @param  \App\Models\Transporter  $transporter
-     * @return \Illuminate\Http\RedirectResponse
-     */
+
     public function deleteTransporter(Transporter $transporter)
     {
         $transporter->delete();
         return redirect()->route('admin.manage-transporters')->with('success', 'Transporter deleted successfully.');
     }
+    public function createPackage()
+    {
+        $users = User::all();
+        return view('admin.create-package', compact('users'));
+    }
 
-    /**
-     * Manage packages in the admin panel.
-     *
-     * @return \Illuminate\View\View
-     */
+    // Store Package
+    public function storePackage(Request $request)
+    {
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'sender' => 'required|string',
+            'receiver' => 'required|string',
+            'tracking_number' => 'required|unique:packages',
+            'status' => 'required|in:Pending,In-Transit,Delivered',
+            'description' => 'nullable|string',
+            'delivery_date' => 'nullable|date',
+        ]);
+
+        Package::create($validated);
+
+        return redirect()->route('admin.manage-packages')->with('success', 'Package created successfully.');
+    }
+
     public function managePackages()
     {
         $packages = Package::all();
         return view('admin.manage-packages', compact('packages'));
     }
 
-    /**
-     * Show the form to edit a package.
-     *
-     * @param  \App\Models\Package  $package
-     * @return \Illuminate\View\View
-     */
+
     public function editPackage(Package $package)
     {
-        return view('admin.edit-package', compact('package'));
+        $users = User::all();
+        return view('admin.edit-packages', compact('package', 'users'));
     }
 
-    /**
-     * Update a package.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Package  $package
-     * @return \Illuminate\Http\RedirectResponse
-     */
+
     public function updatePackage(Request $request, Package $package)
     {
         $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
             'sender' => 'required|string',
             'receiver' => 'required|string',
             'tracking_number' => 'required|unique:packages,tracking_number,' . $package->id,
@@ -185,12 +192,7 @@ class AdminController extends Controller
         return redirect()->route('admin.manage-packages')->with('success', 'Package updated successfully.');
     }
 
-    /**
-     * Delete a package.
-     *
-     * @param  \App\Models\Package  $package
-     * @return \Illuminate\Http\RedirectResponse
-     */
+
     public function deletePackage(Package $package)
     {
         $package->delete();
