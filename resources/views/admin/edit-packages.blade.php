@@ -1,57 +1,57 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="container mt-4">
-        <h2>Edit Package</h2>
+    <div class="container mx-auto mt-6 p-6 bg-white rounded-lg shadow-lg">
+        <h2 class="text-3xl font-semibold text-gray-800 mb-6">Edit Package</h2>
 
-        <form method="POST" action="{{ route('admin.update-package', $package->id) }}">
+        <form method="POST" action="{{ route('admin.update-package', $package->id) }}" class="space-y-6">
             @csrf
             @method('PUT')
 
             <!-- Sender -->
-            <div class="mb-3">
-                <label for="sender" class="form-label">Sender</label>
-                <input type="text" name="sender" id="sender" class="form-control" value="{{ old('sender', $package->sender) }}" required>
+            <div class="mb-4">
+                <label for="sender" class="block text-sm font-medium text-gray-700">Sender</label>
+                <input type="text" name="sender" id="sender" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="{{ old('sender', $package->sender) }}" required>
                 @error('sender')
-                    <div class="text-danger">{{ $message }}</div>
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
             <!-- Receiver -->
-            <div class="mb-3">
-                <label for="receiver" class="form-label">Receiver</label>
-                <input type="text" name="receiver" id="receiver" class="form-control" value="{{ old('receiver', $package->receiver) }}" required>
+            <div class="mb-4">
+                <label for="receiver" class="block text-sm font-medium text-gray-700">Receiver</label>
+                <input type="text" name="receiver" id="receiver" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="{{ old('receiver', $package->receiver) }}" required>
                 @error('receiver')
-                    <div class="text-danger">{{ $message }}</div>
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
             <!-- Tracking Number -->
-            <div class="mb-3">
-                <label for="tracking_number" class="form-label">Tracking Number</label>
-                <input type="text" name="tracking_number" id="tracking_number" class="form-control" value="{{ old('tracking_number', $package->tracking_number) }}" required>
+            <div class="mb-4">
+                <label for="tracking_number" class="block text-sm font-medium text-gray-700">Tracking Number</label>
+                <input type="text" name="tracking_number" id="tracking_number" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="{{ old('tracking_number', $package->tracking_number) }}" required>
                 @error('tracking_number')
-                    <div class="text-danger">{{ $message }}</div>
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
             <!-- Status -->
-            <div class="mb-3">
-                <label for="status" class="form-label">Status</label>
-                <select name="status" id="status" class="form-select">
+            <div class="mb-4">
+                <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                <select name="status" id="status" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     <option value="Pending" {{ old('status', $package->status) == 'Pending' ? 'selected' : '' }}>Pending</option>
                     <option value="In-Transit" {{ old('status', $package->status) == 'In-Transit' ? 'selected' : '' }}>In-Transit</option>
                     <option value="Delivered" {{ old('status', $package->status) == 'Delivered' ? 'selected' : '' }}>Delivered</option>
                 </select>
                 @error('status')
-                    <div class="text-danger">{{ $message }}</div>
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
             <!-- Assigned User -->
-            <div class="mb-3">
-                <label for="user_id" class="form-label">Assign to User</label>
-                <select name="user_id" id="user_id" class="form-select">
+            <div class="mb-4">
+                <label for="user_id" class="block text-sm font-medium text-gray-700">Assign to User</label>
+                <select name="user_id" id="user_id" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     @foreach($users as $user)
                         <option value="{{ $user->id }}" {{ old('user_id', $package->user_id) == $user->id ? 'selected' : '' }}>
                             {{ $user->name }} ({{ $user->email }})
@@ -59,30 +59,34 @@
                     @endforeach
                 </select>
                 @error('user_id')
-                    <div class="text-danger">{{ $message }}</div>
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
             <!-- Description -->
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea name="description" id="description" class="form-control">{{ old('description', $package->description) }}</textarea>
+            <div class="mb-4">
+                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea name="description" id="description" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">{{ old('description', $package->description) }}</textarea>
                 @error('description')
-                    <div class="text-danger">{{ $message }}</div>
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
             <!-- Delivery Date -->
-            <div class="mb-3">
-                <label for="delivery_date" class="form-label">Delivery Date</label>
-                <input type="date" name="delivery_date" id="delivery_date" class="form-control" value="{{ old('delivery_date', $package->delivery_date ? $package->delivery_date->format('Y-m-d') : '') }}">
+            <div class="mb-4">
+                <label for="delivery_date" class="block text-sm font-medium text-gray-700">Delivery Date</label>
+                <input type="date" name="delivery_date" id="delivery_date" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="{{ old('delivery_date', $package->delivery_date ? $package->delivery_date->format('Y-m-d') : '') }}">
                 @error('delivery_date')
-                    <div class="text-danger">{{ $message }}</div>
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary">Update Package</button>
+            <div class="mt-6">
+                <button type="submit" class="w-full py-2 px-4 bg-indigo-600 text-white rounded-lg shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-300 text-lg">
+                    Update Package
+                </button>
+            </div>
         </form>
     </div>
 @endsection

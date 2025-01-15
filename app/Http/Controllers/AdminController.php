@@ -198,4 +198,28 @@ class AdminController extends Controller
         $package->delete();
         return redirect()->route('admin.manage-packages')->with('success', 'Package deleted successfully.');
     }
+
+
+
+    public function assignPackageForm(Package $package)
+    {
+        $users = User::all(); 
+        return view('admin.assign-package', compact('package', 'users'));
+    }
+    
+    public function assignPackage(Request $request, Package $package)
+    {
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
+    
+        $package->update(['user_id' => $validated['user_id']]);
+    
+        return redirect()->route('admin.manage-packages')->with('success', 'Package assigned successfully.');
+    }
+
+
+
+
+
 }

@@ -52,6 +52,9 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/packages/{package}/edit', [AdminController::class, 'editPackage'])->name('edit-package');
     Route::put('/packages/{package}', [AdminController::class, 'updatePackage'])->name('update-package');
     Route::delete('/packages/{package}', [AdminController::class, 'deletePackage'])->name('delete-package');
+
+    Route::get('/packages/{package}/assign', [AdminController::class, 'assignPackageForm'])->name('assign-package-form');
+    Route::post('/packages/{package}/assign', [AdminController::class, 'assignPackage'])->name('assign-package');
 });
 
 Route::middleware(['auth', 'role:Transporter'])->group(function () {
@@ -61,12 +64,12 @@ Route::middleware(['auth', 'role:Transporter'])->group(function () {
 });
 
 Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
-   
+
     Route::get('/profile', [UserProfileController::class, 'show'])->name('profile');
     Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [UserProfileController::class, 'update'])->name('profile.update');
 
-    
+
     Route::get('/password/edit', [UserPasswordController::class, 'edit'])->name('password.edit');
     Route::put('/password', [UserPasswordController::class, 'update'])->name('password.update');
 
@@ -75,7 +78,7 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
     Route::get('/packages/{package}', [UserPackageController::class, 'show'])->name('packages.show');
     Route::get('/packages/search', [UserPackageController::class, 'search'])->name('packages.search');
 
-    
+
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
 });
 
@@ -84,4 +87,4 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
 
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

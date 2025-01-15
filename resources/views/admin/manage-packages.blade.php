@@ -53,6 +53,10 @@
                                 class="px-4 py-2 bg-yellow-500 text-white rounded-lg text-sm hover:bg-yellow-600">
                                 Edit
                             </a>
+                            <a href="{{ route('admin.assign-package-form', $package) }}"
+                                class="px-4 py-2 bg-indigo-500 text-white rounded-lg text-sm hover:bg-indigo-600">
+                                Assign
+                            </a>
                             <form action="{{ route('admin.delete-package', $package) }}" method="POST"
                                 onsubmit="return confirm('Are you sure?')">
                                 @csrf

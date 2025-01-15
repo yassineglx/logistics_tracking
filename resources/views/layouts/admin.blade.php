@@ -22,26 +22,30 @@
             <ul class="space-y-4">
                 <li>
                     <a href="{{ route('admin.dashboard') }}"
-                        class="flex items-center px-4 py-3 rounded-lg transition transform hover:scale-105 hover:bg-blue-500">
-                        <span class="material-icons-outlined mr-3">dashboard</span> Dashboard
+                       class="flex items-center px-4 py-3 rounded-lg transition-all duration-200 hover:scale-105 hover:bg-blue-500">
+                        <span class="material-icons-outlined mr-4 text-xl">home</span>
+                        <span class="text-lg font-medium">Dashboard</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('admin.manage-users') }}"
-                        class="flex items-center px-4 py-3 rounded-lg transition transform hover:scale-105 hover:bg-blue-500">
-                        <span class="material-icons-outlined mr-3">people</span> Manage Users
+                       class="flex items-center px-4 py-3 rounded-lg transition-all duration-200 hover:scale-105 hover:bg-blue-500">
+                        <span class="material-icons-outlined mr-4 text-xl">group</span>
+                        <span class="text-lg font-medium">Manage Users</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('admin.manage-transporters') }}"
-                        class="flex items-center px-4 py-3 rounded-lg transition transform hover:scale-105 hover:bg-blue-500">
-                        <span class="material-icons-outlined mr-3">local_shipping</span> Manage Transporters
+                       class="flex items-center px-4 py-3 rounded-lg transition-all duration-200 hover:scale-105 hover:bg-blue-500">
+                        <span class="material-icons-outlined mr-4 text-xl">directions_car</span>
+                        <span class="text-lg font-medium">Manage Transporters</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('admin.manage-packages') }}"
-                        class="flex items-center px-4 py-3 rounded-lg transition transform hover:scale-105 hover:bg-blue-500">
-                        <span class="material-icons-outlined mr-3">package</span> Manage Packages
+                       class="flex items-center px-4 py-3 rounded-lg transition-all duration-200 hover:scale-105 hover:bg-blue-500">
+                        <span class="material-icons-outlined mr-4 text-xl">archive</span>
+                        <span class="text-lg font-medium">Manage Packages</span>
                     </a>
                 </li>
             </ul>
