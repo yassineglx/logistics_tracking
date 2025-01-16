@@ -1,5 +1,7 @@
 @extends('layouts.admin')
-
+@section('title')
+Assign Package to User
+@endsection
 @section('content')
     <div class="container mx-auto mt-8 px-4">
         <h1 class="text-3xl font-bold text-gray-800 mb-6">Assign Package to User</h1>
@@ -32,3 +34,4 @@
         </div>
     </div>
 @endsection
+

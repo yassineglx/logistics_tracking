@@ -15,6 +15,7 @@ class Transporter extends Model
         'vehicle_type',
         'license_plate',
         'availability_status',
+        'user_id'
     ];
 
     /**

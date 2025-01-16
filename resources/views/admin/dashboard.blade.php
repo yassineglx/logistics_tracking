@@ -1,5 +1,9 @@
 @extends('layouts.admin')
 
+@section('title')
+Welcome, Admin!
+@endsection
+
 @section('content')
 <div class="container mx-auto mt-8">
     <h1 class="text-3xl font-extrabold text-gray-800 mb-6">Welcome, Admin!</h1>

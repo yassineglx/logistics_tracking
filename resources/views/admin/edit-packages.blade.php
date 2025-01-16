@@ -1,5 +1,9 @@
 @extends('layouts.admin')
 
+@section('title')
+Edit Package
+@endsection
+
 @section('content')
     <div class="container mx-auto mt-6 p-6 bg-white rounded-lg shadow-lg">
         <h2 class="text-3xl font-semibold text-gray-800 mb-6">Edit Package</h2>
@@ -8,23 +12,68 @@
             @csrf
             @method('PUT')
 
+            @if ($errors->any())
+    <div class="space-y-2">
+        @foreach ($errors->all() as $error)
+            <div class="bg-red-50 border border-red-500 text-red-600 px-4 py-2 rounded">
+                {{ $error }}
+            </div>
+        @endforeach
+    </div>
+@endif
+
+        
+        <div class="mb-4">
+                    <label for="sender" class="block text-gray-700 font-medium">Sender</label>
+                    <select id="sender" name="sender" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-300">
+                        <option value="" disabled selected>Select a sender</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}" {{ old('sender', $package->sender) == $user->id ? 'selected' : '' }}>
+                                {{ $user->name }} ({{ $user->email }})
+                            </option>
+                        @endforeach
+                    </select>
+</div>
+        <div class="mb-4">
+                    <label for="receiver" class="block text-gray-700 font-medium">Receiver</label>
+                    <select id="receiver" name="receiver" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-300">
+                        <option value="" disabled selected>Select a receiver</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}" {{ old('receiver', $package->receiver) == $user->id ? 'selected' : '' }}>
+                                {{ $user->name }} ({{ $user->email }})
+                            </option>
+                        @endforeach
+                    </select>
+</div>
+        <div class="mb-4">
+                    <label for="transporter_id" class="block text-gray-700 font-medium">Transporter</label>
+                    <select id="transporter_id" name="transporter_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-300">
+                        <option value="" disabled selected>Select a transporter</option>
+                        @foreach ($transporters as $transporter)
+                            <option value="{{ $transporter->id }}" {{ old('transporter_id', $package->transporter_id) == $user->id ? 'selected' : '' }}>
+                                {{ $transporter->name }} ({{ $transporter->email }})
+                            </option>
+                        @endforeach
+                    </select>
+</div>
+
             <!-- Sender -->
-            <div class="mb-4">
+            <!-- <div class="mb-4">
                 <label for="sender" class="block text-sm font-medium text-gray-700">Sender</label>
                 <input type="text" name="sender" id="sender" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="{{ old('sender', $package->sender) }}" required>
                 @error('sender')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
-            </div>
+            </div> -->
 
             <!-- Receiver -->
-            <div class="mb-4">
+            <!-- <div class="mb-4">
                 <label for="receiver" class="block text-sm font-medium text-gray-700">Receiver</label>
                 <input type="text" name="receiver" id="receiver" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="{{ old('receiver', $package->receiver) }}" required>
                 @error('receiver')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
-            </div>
+            </div> -->
 
             <!-- Tracking Number -->
             <div class="mb-4">

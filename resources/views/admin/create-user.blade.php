@@ -1,5 +1,7 @@
 @extends('layouts.admin')
-
+@section('title')
+Create User
+@endsection
 @section('content')
 <div class="container mx-auto mt-8">
     <h2 class="text-3xl font-bold text-gray-800 mb-6">Create User</h2>

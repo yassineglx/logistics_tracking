@@ -43,20 +43,24 @@ class AdminController extends Controller
 
         return redirect()->route('admin.manage-users')->with('success', 'User created successfully.');
     }
-
     public function manageUsers(Request $request)
     {
         $query = User::query();
-
-        if ($request->has('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%')
-                ->orWhere('email', 'like', '%' . $request->search . '%');
+    
+        if ($request->filled('role')) {
+            $query->where('role', $request->role);
         }
-
+    
+        if ($request->has('search')) {
+            $query->where(function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('email', 'like', '%' . $request->search . '%');
+            });
+        }
+    
         $users = $query->paginate(10);
         return view('admin.manage-users', compact('users'));
     }
-
 
     public function editUser(User $user)
     {
@@ -85,7 +89,8 @@ class AdminController extends Controller
 
     public function createTransporter()
     {
-        return view('admin.create-transporter');
+        $users = User::where('role', 'User')->get();
+        return view('admin.create-transporter',compact('users'));
     }
 
     // Store Transporter
@@ -97,6 +102,7 @@ class AdminController extends Controller
             'vehicle_type' => 'required|string',
             'license_plate' => 'required|unique:transporters',
             'availability_status' => 'required|in:Available,Busy',
+            'user_id' => 'required|exists:users,id'
         ]);
 
         Transporter::create($validated);
@@ -105,25 +111,28 @@ class AdminController extends Controller
     }
     public function manageTransporters()
     {
-        $transporters = Transporter::all();
+       
+        $transporters = Transporter::paginate(10);
         return view('admin.manage-transporters', compact('transporters'));
     }
 
 
     public function editTransporter(Transporter $transporter)
     {
-        return view('admin.edit-transporter', compact('transporter'));
+        $users = User::where('role', 'User')->get();
+        return view('admin.edit-transporter', compact('transporter','users'));
     }
 
 
     public function updateTransporter(Request $request, Transporter $transporter)
     {
+        // 'license_plate' => 'required|string',
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|unique:transporters,phone,' . $transporter->id,
             'vehicle_type' => 'required|string',
-            'license_plate' => 'required|string',
             'availability_status' => 'required|in:Available,Busy',
+            'user_id' => 'required|exists:users,id'
         ]);
 
         $transporter->update($validated);
@@ -139,15 +148,16 @@ class AdminController extends Controller
     }
     public function createPackage()
     {
-        $users = User::all();
-        return view('admin.create-package', compact('users'));
+        $users = User::where('role', 'User')->get();
+        $transporters = User::where('role', 'Transporter')->get();
+        return view('admin.create-package', compact('users','transporters'));
     }
 
     // Store Package
     public function storePackage(Request $request)
     {
+        // 'user_id' => 'required|exists:users,id',
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
             'sender' => 'required|string',
             'receiver' => 'required|string',
             'tracking_number' => 'required|unique:packages',
@@ -170,8 +180,9 @@ class AdminController extends Controller
 
     public function editPackage(Package $package)
     {
-        $users = User::all();
-        return view('admin.edit-packages', compact('package', 'users'));
+        $users = User::where('role', 'User')->get();
+        $transporters = User::where('role', 'Transporter')->get();
+        return view('admin.edit-packages', compact('package', 'users' , 'transporters'));
     }
 
 
@@ -179,8 +190,9 @@ class AdminController extends Controller
     {
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
-            'sender' => 'required|string',
-            'receiver' => 'required|string',
+            'sender' => 'required|exists:users,id',
+            'receiver' => 'required|exists:users,id',
+            'transporter_id' => 'required|exists:users,id',
             'tracking_number' => 'required|unique:packages,tracking_number,' . $package->id,
             'status' => 'required|in:Pending,In-Transit,Delivered',
             'description' => 'nullable|string',
@@ -203,7 +215,7 @@ class AdminController extends Controller
 
     public function assignPackageForm(Package $package)
     {
-        $users = User::all(); 
+        $users = User::where('role', 'User')->get(); 
         return view('admin.assign-package', compact('package', 'users'));
     }
     

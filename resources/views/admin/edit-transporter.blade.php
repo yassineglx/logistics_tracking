@@ -1,5 +1,9 @@
 @extends('layouts.admin')
 
+@section('title')
+Edit Transporter
+@endsection
+
 @section('content')
 <div class="container mx-auto mt-8">
     <h1 class="text-3xl font-extrabold text-gray-800 mb-6">Edit Transporter</h1>
@@ -35,10 +39,24 @@
             <select id="availability_status" name="availability_status" required
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50">
                 <option value="Available" {{ $transporter->availability_status == 'Available' ? 'selected' : '' }}>Available</option>
-                <option value="Unavailable" {{ $transporter->availability_status == 'Unavailable' ? 'selected' : '' }}>Unavailable</option>
+                <option value="Busy" {{ $transporter->availability_status == 'Busy' ? 'selected' : '' }}>Busy</option>
             </select>
         </div>
 
+        <div class="mb-4">
+    <label for="user_id" class="block text-gray-700 font-medium">Select User</label>
+    <select id="user_id" name="user_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-300">
+        <option value="">Select a user</option>
+        @foreach ($users as $user)
+            <option value="{{ $user->id }}" {{ old('user_id', $transporter->user_id) == $user->id ? 'selected' : '' }}>
+                {{ $user->name }} ({{ $user->email }})
+            </option>
+        @endforeach
+    </select>
+    @error('user_id')
+        <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+    @enderror
+</div>
         <!-- Submit Button -->
         <button type="submit"
             class="w-full bg-blue-600 text-white py-2 px-4 rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">

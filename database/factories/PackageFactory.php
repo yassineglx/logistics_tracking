@@ -18,8 +18,8 @@ class PackageFactory extends Factory
         return [
             'user_id' => User::factory()->create(), // Linking to a regular user
             'transporter_id' => Transporter::factory()->create()->id, // Linking to a transporter
-            'sender' => $this->faker->name,
-            'receiver' => $this->faker->name,
+            'sender' => User::factory()->create(),
+            'receiver' => User::factory()->create(),
             'tracking_number' => strtoupper($this->faker->bothify('PKG-#######')),
             'status' => $this->faker->randomElement(['Pending', 'In-Transit', 'Delivered']),
             'description' => $this->faker->sentence,
